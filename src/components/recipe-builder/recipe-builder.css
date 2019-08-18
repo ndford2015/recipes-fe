@@ -1,0 +1,46 @@
+.ui.centered.card {
+    height: 50px;
+    justify-content: center;
+    font-size:1.5em;
+    margin: 0.5em !important;
+    padding: 0.5em;
+    color: black;
+}
+
+.ui.card:first-child {
+    margin: 1em;
+}
+
+.ui.card {
+    margin: 1em;
+}
+
+.ui.card:last-child {
+    margin: 1em;
+}
+
+.ui.header {
+    margin: 10px !important;
+}
+
+.card-content {
+    line-height: 1.5em;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 0.8em;
+}
+
+.ui.grid {
+    justify-content: center;
+    margin: 10px;
+}
+
+.ui.grid+.grid {
+    margin: 0;
+}
+
+.ui.label {
+    margin: 1em 0.5em;
+}
