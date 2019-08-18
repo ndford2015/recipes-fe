@@ -1,5 +1,5 @@
 import { BASE_URL } from "./constants";
-import { IIngredientResponse } from "./interfaces";
+import { IIngredientResponse, IIngredient } from "./interfaces";
 import { formatIntoQueryString } from "./utils";
 
 export function getRelatedIngredients(selectedIngredients: string[]): Promise<IIngredientResponse> {
@@ -7,7 +7,7 @@ export function getRelatedIngredients(selectedIngredients: string[]): Promise<II
     return fetch(url).then((response) => response.json());
 }
 
-export function getTopIngredients(): Promise<IIngredientResponse> {
+export function getTopIngredients(): Promise<IIngredient[]> {
     const url: string = `${BASE_URL}/ingredients/top/`;
     return fetch(url).then((response) => response.json());
 }

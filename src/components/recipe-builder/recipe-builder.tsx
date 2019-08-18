@@ -4,7 +4,7 @@ import { IRecipeBuilderState, IRecipeBuilderProps } from './interfaces';
 import { STYLE_OPTIONS, BASE_OPTIONS } from './constants';
 import { autobind } from 'core-decorators'
 import { IIngredientResponse, IIngredient, IRecipe } from '../../api/interfaces';
-import { getRelatedIngredients, getRecipesByIds } from '../../api';
+import { getRelatedIngredients, getRecipesByIds, getTopIngredients } from '../../api';
 import './recipe-builder.css';
 import { IngredientsContainer } from './cards/ingredient-cards';
 import { RecipesContainer } from './cards/recipe-cards';
@@ -32,9 +32,14 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
     this.setState({selectedBase: base}, () => this.selectIngredient(base));
   }
 
+  public async componentDidMount(): Promise<void> {
+    const topIngredients: IIngredient[] = await getTopIngredients();
+    this.setState({ingredientChoices: topIngredients});
+  }
+  
   @autobind async selectIngredient(ingredient: string): Promise<void> {
     const selectedIngredients: string[] = [...this.state.selectedIngredients, ingredient]; 
-    this.setState({selectedIngredients});
+    this.setState({selectedIngredients, selectedBase: 'null', selectedMealStyle: 'null'});
     this.reloadRelatedIngredients(selectedIngredients);
     window.scrollTo(0, 0);
   }
@@ -114,9 +119,11 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
         <IngredientsContainer selectIngredient={this.setBase} ingredients={BASE_OPTIONS[this.state.selectedMealStyle]} />}
       {(this.state.selectedMealStyle && this.state.selectedBase) && 
         <RecipesContainer isLoading={this.state.isLoading} recipes={this.state.highlightedRecipes}/>}
-      {(this.state.selectedMealStyle && this.state.selectedBase && this.state.recipeChoices.length > 5) && 
+      {(this.state.ingredientChoices.length) && 
         <IngredientsContainer isLoading={this.state.isLoading} prelimsSelected selectIngredient={this.selectIngredient} ingredients={this.state.ingredientChoices} />}
     </Container>
   );
   }
 }
+
+// this.state.selectedMealStyle && this.state.selectedBase && this.state.recipeChoices.length > 5
