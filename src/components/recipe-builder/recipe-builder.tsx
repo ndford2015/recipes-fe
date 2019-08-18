@@ -32,11 +32,16 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
     this.setState({selectedBase: base}, () => this.selectIngredient(base));
   }
 
-  public async componentDidMount(): Promise<void> {
-    const topIngredients: IIngredient[] = await getTopIngredients();
-    this.setState({ingredientChoices: topIngredients});
+  public componentDidMount(): void {
+    this.setInitialIngredients();
   }
   
+  public async setInitialIngredients(): Promise<void> {
+    this.setState({isLoading: true})
+    const topIngredients: IIngredient[] = await getTopIngredients();
+    this.setState({ingredientChoices: topIngredients, isLoading: false});
+  }
+
   @autobind async selectIngredient(ingredient: string): Promise<void> {
     const selectedIngredients: string[] = [...this.state.selectedIngredients, ingredient]; 
     this.setState({selectedIngredients, selectedBase: 'null', selectedMealStyle: 'null'});
@@ -94,6 +99,8 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
     this.setState({selectedIngredients: this.state.selectedIngredients.filter((_, i: number) => i !== removeIndex)}, async () => {
       if (!this.state.selectedIngredients.length) {
         this.clearSelection();
+        console.log('Setting initial ingredients');
+        this.setInitialIngredients();
       } else {
         this.reloadRelatedIngredients(this.state.selectedIngredients);
       }
