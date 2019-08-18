@@ -1,13 +1,14 @@
 import React from 'react';
 import { Card, Container, Header, Label, Icon } from 'semantic-ui-react';
 import { IRecipeBuilderState, IRecipeBuilderProps } from './interfaces';
-import { STYLE_OPTIONS, BASE_OPTIONS } from './constants';
+import { STYLE_OPTIONS, BASE_OPTIONS, CHOOSE_MEAL_STYLE, CHOOSE_MEAL_BASE, SELECT_INGREDIENTS } from './constants';
 import { autobind } from 'core-decorators'
 import { IIngredientResponse, IIngredient, IRecipe } from '../../api/interfaces';
 import { getRelatedIngredients, getRecipesByIds, getTopIngredients } from '../../api';
 import './recipe-builder.css';
 import { IngredientsContainer } from './cards/ingredient-cards';
 import { RecipesContainer } from './cards/recipe-cards';
+import { SelectedIngredients } from './selected-ingredients';
 export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRecipeBuilderState> {
   constructor(props:IRecipeBuilderProps) {
     super(props);
@@ -73,13 +74,6 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
   }
 
 
-  @autobind
-  public getSelectedIngredientLabels(): JSX.Element[] {
-    return this.state.selectedIngredients.map((ingr: string, index: number) => {
-      const onClick: () => void = () => this.removeIngredient(index);
-      return <Label>{ingr}<Icon name='delete' onClick={onClick}/></Label>
-    })
-  }
 
   @autobind 
   public async reloadRelatedIngredients(selectedIngredients: string[]): Promise<void> {
@@ -99,7 +93,6 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
     this.setState({selectedIngredients: this.state.selectedIngredients.filter((_, i: number) => i !== removeIndex)}, async () => {
       if (!this.state.selectedIngredients.length) {
         this.clearSelection();
-        console.log('Setting initial ingredients');
         this.setInitialIngredients();
       } else {
         this.reloadRelatedIngredients(this.state.selectedIngredients);
@@ -111,7 +104,8 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
   public clearSelection() {
     this.setState({
       selectedBase: '',
-      selectedMealStyle: ''
+      selectedMealStyle: '',
+      highlightedRecipes: []
     })
   }
 
@@ -119,15 +113,15 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
     return (
     <Container>
       <Header centered size={"large"}>Recipe Builder</Header>
-      {this.state.selectedIngredients.length > 0 && <div>{`Selected Ingredients: `}{this.getSelectedIngredientLabels()}</div>}
+      <SelectedIngredients selectedIngredients={this.state.selectedIngredients} removeIngredient={this.removeIngredient}/>
      {!(this.state.selectedBase || this.state.selectedMealStyle) && 
-        <IngredientsContainer selectIngredient={this.setStyle} ingredients={STYLE_OPTIONS} />}
+        <IngredientsContainer headerText={CHOOSE_MEAL_STYLE} selectIngredient={this.setStyle} ingredients={STYLE_OPTIONS} />}
       {(this.state.selectedMealStyle && !this.state.selectedBase) && 
-        <IngredientsContainer selectIngredient={this.setBase} ingredients={BASE_OPTIONS[this.state.selectedMealStyle]} />}
-      {(this.state.selectedMealStyle && this.state.selectedBase) && 
+        <IngredientsContainer headerText={CHOOSE_MEAL_BASE} selectIngredient={this.setBase} ingredients={BASE_OPTIONS[this.state.selectedMealStyle]} />}
+      {(this.state.highlightedRecipes.length > 0) && 
         <RecipesContainer isLoading={this.state.isLoading} recipes={this.state.highlightedRecipes}/>}
-      {(this.state.ingredientChoices.length) && 
-        <IngredientsContainer isLoading={this.state.isLoading} prelimsSelected selectIngredient={this.selectIngredient} ingredients={this.state.ingredientChoices} />}
+      {(this.state.ingredientChoices.length && (!this.state.selectedIngredients.length || this.state.recipeChoices.length > 5)) && 
+        <IngredientsContainer headerText={SELECT_INGREDIENTS} isLoading={this.state.isLoading} prelimsSelected selectIngredient={this.selectIngredient} ingredients={this.state.ingredientChoices} />}
     </Container>
   );
   }

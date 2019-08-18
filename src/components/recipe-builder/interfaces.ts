@@ -16,3 +16,8 @@ export interface IRecipeBuilderProps {
 export interface IBaseOptions {
     [baseName: string]: IIngredient[]
 }
+
+export interface ISelectedIngredientsProps {
+    selectedIngredients: string[];
+    removeIngredient(ingredientIndex: number): void;
+}
