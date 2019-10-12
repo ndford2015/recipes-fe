@@ -21,7 +21,12 @@ export class RecipesContainer extends React.PureComponent<IRecipesContainerProps
         })
     }
 
-  public render(): JSX.Element {
+  public render(): JSX.Element | null {
+
+    if (!this.props.recipes.length) {
+      return null;
+    }
+    
     return (
       <React.Fragment>
       <Header dividing size="medium">{'Select a recipe!'}</Header>  

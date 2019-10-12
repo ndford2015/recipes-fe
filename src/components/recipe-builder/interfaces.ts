@@ -1,12 +1,13 @@
 import { IIngredient, IRecipe } from "../../api/interfaces";
+import { SELECTION_STEP } from "./constants";
 
 export interface IRecipeBuilderState {
     selectedIngredients: string[];
     ingredientChoices: IIngredient[];
     recipeChoices: string[];
     highlightedRecipes: IRecipe[];
-    selectedBase: string;
     selectedMealStyle: string;
+    selectionStep: SELECTION_STEP;
     isLoading: boolean;
 }
 
