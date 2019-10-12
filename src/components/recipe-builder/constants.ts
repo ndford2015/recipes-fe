@@ -11,3 +11,13 @@ export const BASE_OPTIONS: IBaseOptions = {
     [STYLE_FISH]: [{name: 'Scallops'}, {name: 'Oysters'}, {name: 'Blue Fish'}],
     [STYLE_VEGETARIAN]: [{name: 'Tofu'}, {name: 'Lentils'}, {name: 'Pinto Beans'}]
 }
+
+export const CHOOSE_MEAL_STYLE: string = 'Start by choosing a meal style!';
+export const CHOOSE_MEAL_BASE: string = 'Now choose a base!';
+export const SELECT_INGREDIENTS: string = '...or select some ingredients!';
+
+export enum SELECTION_STEP {
+    CHOOSE_BASE,
+    CHOOSE_CUISINE_STYLE,
+    SELECT_INGREDIENTS
+}

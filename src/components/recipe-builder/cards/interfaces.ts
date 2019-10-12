@@ -4,6 +4,7 @@ export interface IIngredientsContainerProps {
     ingredients: IIngredient[];
     prelimsSelected?: boolean;
     isLoading?: boolean;
+    headerText?: string;
     selectIngredient(ingredient: string): void;
 }
 

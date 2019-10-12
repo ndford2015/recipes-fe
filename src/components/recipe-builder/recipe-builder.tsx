@@ -1,13 +1,14 @@
 import React from 'react';
 import { Card, Container, Header, Label, Icon } from 'semantic-ui-react';
 import { IRecipeBuilderState, IRecipeBuilderProps } from './interfaces';
-import { STYLE_OPTIONS, BASE_OPTIONS } from './constants';
+import { STYLE_OPTIONS, BASE_OPTIONS, CHOOSE_MEAL_STYLE, CHOOSE_MEAL_BASE, SELECT_INGREDIENTS, SELECTION_STEP } from './constants';
 import { autobind } from 'core-decorators'
 import { IIngredientResponse, IIngredient, IRecipe } from '../../api/interfaces';
-import { getRelatedIngredients, getRecipesByIds } from '../../api';
+import { getRelatedIngredients, getRecipesByIds, getTopIngredients } from '../../api';
 import './recipe-builder.css';
 import { IngredientsContainer } from './cards/ingredient-cards';
 import { RecipesContainer } from './cards/recipe-cards';
+import { SelectedIngredients } from './selected-ingredients';
 export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRecipeBuilderState> {
   constructor(props:IRecipeBuilderProps) {
     super(props);
@@ -16,59 +17,42 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
       ingredientChoices: [],
       highlightedRecipes: [],
       recipeChoices: [],
-      selectedBase: '',
       selectedMealStyle: '',
       isLoading: false,
+      selectionStep: SELECTION_STEP.CHOOSE_CUISINE_STYLE
     }
   }
 
   @autobind
   public setStyle(style: string): void {
-    this.setState({selectedMealStyle: style})
+    this.setState({selectedMealStyle: style, selectionStep: SELECTION_STEP.CHOOSE_BASE})
   }
 
-  @autobind
-  public async setBase(base: string): Promise<void> {
-    this.setState({selectedBase: base}, () => this.selectIngredient(base));
+  public componentDidMount(): void {
+    this.setInitialIngredients();
+  }
+  
+  public async setInitialIngredients(): Promise<void> {
+    this.setState({isLoading: true})
+    const topIngredients: IIngredient[] = await getTopIngredients();
+    this.setState({ingredientChoices: topIngredients, isLoading: false});
   }
 
   @autobind async selectIngredient(ingredient: string): Promise<void> {
     const selectedIngredients: string[] = [...this.state.selectedIngredients, ingredient]; 
+    if (this.state.selectionStep !== SELECTION_STEP.SELECT_INGREDIENTS) {
+      this.setState({selectionStep: SELECTION_STEP.SELECT_INGREDIENTS});
+    }
     this.setState({selectedIngredients});
     this.reloadRelatedIngredients(selectedIngredients);
     window.scrollTo(0, 0);
   }
-  
-  @autobind
-  public getBaseOptions(): JSX.Element[] {
-    return BASE_OPTIONS[this.state.selectedMealStyle].map((option: IIngredient) => {
-      const onClick: () => void = () => this.setBase(option.name);
-      return <Card centered onClick={onClick} content={option}/>
-    })
-  }
-
+ 
   @autobind 
   public async getRecipeHighlights() {
     const selectedChoices: string[] = this.state.recipeChoices.length <= 5 ? this.state.recipeChoices : this.state.recipeChoices.slice(0,2);
     const highlightedRecipes: IRecipe[] = await getRecipesByIds(selectedChoices);
     this.setState({highlightedRecipes, isLoading: false});
-  }
-
-  @autobind
-  public getIngredientCards(): JSX.Element[] {
-    return this.state.ingredientChoices.map((ingredient: IIngredient) => {
-      const onClick: () => void = () => this.selectIngredient(ingredient.name);
-      return <Card centered onClick={onClick} content={ingredient.name}/>
-    })
-  }
-
-
-  @autobind
-  public getSelectedIngredientLabels(): JSX.Element[] {
-    return this.state.selectedIngredients.map((ingr: string, index: number) => {
-      const onClick: () => void = () => this.removeIngredient(index);
-      return <Label>{ingr}<Icon name='delete' onClick={onClick}/></Label>
-    })
   }
 
   @autobind 
@@ -89,6 +73,7 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
     this.setState({selectedIngredients: this.state.selectedIngredients.filter((_, i: number) => i !== removeIndex)}, async () => {
       if (!this.state.selectedIngredients.length) {
         this.clearSelection();
+        this.setInitialIngredients();
       } else {
         this.reloadRelatedIngredients(this.state.selectedIngredients);
       }
@@ -98,25 +83,36 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
   @autobind
   public clearSelection() {
     this.setState({
-      selectedBase: '',
-      selectedMealStyle: ''
+      selectionStep: SELECTION_STEP.CHOOSE_CUISINE_STYLE,
+      selectedMealStyle: '',
+      highlightedRecipes: []
     })
+  }
+
+  @autobind
+  public getSelectionStep(): JSX.Element | null {
+    switch(this.state.selectionStep) {
+      case SELECTION_STEP.CHOOSE_CUISINE_STYLE:
+        return <IngredientsContainer headerText={CHOOSE_MEAL_STYLE} selectIngredient={this.setStyle} ingredients={STYLE_OPTIONS} />;
+      case SELECTION_STEP.CHOOSE_BASE:
+        return <IngredientsContainer headerText={CHOOSE_MEAL_BASE} selectIngredient={this.selectIngredient} ingredients={BASE_OPTIONS[this.state.selectedMealStyle]} />;
+      default:
+        return null;
+    }
   }
 
   public render(): JSX.Element {
     return (
     <Container>
       <Header centered size={"large"}>Recipe Builder</Header>
-      {this.state.selectedIngredients.length > 0 && <div>{`Selected Ingredients: `}{this.getSelectedIngredientLabels()}</div>}
-     {!(this.state.selectedBase || this.state.selectedMealStyle) && 
-        <IngredientsContainer selectIngredient={this.setStyle} ingredients={STYLE_OPTIONS} />}
-      {(this.state.selectedMealStyle && !this.state.selectedBase) && 
-        <IngredientsContainer selectIngredient={this.setBase} ingredients={BASE_OPTIONS[this.state.selectedMealStyle]} />}
-      {(this.state.selectedMealStyle && this.state.selectedBase) && 
-        <RecipesContainer isLoading={this.state.isLoading} recipes={this.state.highlightedRecipes}/>}
-      {(this.state.selectedMealStyle && this.state.selectedBase && this.state.recipeChoices.length > 5) && 
-        <IngredientsContainer isLoading={this.state.isLoading} prelimsSelected selectIngredient={this.selectIngredient} ingredients={this.state.ingredientChoices} />}
+      <SelectedIngredients selectedIngredients={this.state.selectedIngredients} removeIngredient={this.removeIngredient}/>
+      {this.getSelectionStep()}
+      <RecipesContainer isLoading={this.state.isLoading} recipes={this.state.highlightedRecipes}/>
+      {(this.state.ingredientChoices.length && (!this.state.selectedIngredients.length || this.state.recipeChoices.length > 5)) && 
+        <IngredientsContainer headerText={SELECT_INGREDIENTS} isLoading={this.state.isLoading} prelimsSelected selectIngredient={this.selectIngredient} ingredients={this.state.ingredientChoices} />}
     </Container>
   );
   }
 }
+
+// this.state.selectedMealStyle && this.state.selectedBase && this.state.recipeChoices.length > 5

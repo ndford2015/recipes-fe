@@ -22,7 +22,7 @@ export class IngredientsContainer extends React.PureComponent<IIngredientsContai
   public render(): JSX.Element {
     return (
       <React.Fragment>
-      {this.props.prelimsSelected && <Header dividing size="medium">{'...or select more ingredients!'}</Header>}
+      {<Header dividing size="medium">{this.props.headerText}</Header>}
       <Grid doubling stackable={false} columns={3}>
       {this.props.isLoading ? <Loader active/> : this.getIngredientCards()}
       </Grid>
