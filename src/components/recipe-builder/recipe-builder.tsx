@@ -4,7 +4,7 @@ import { IRecipeBuilderState, IRecipeBuilderProps } from './interfaces';
 import { STYLE_OPTIONS, BASE_OPTIONS, CHOOSE_MEAL_STYLE, CHOOSE_MEAL_BASE, SELECT_INGREDIENTS, SELECTION_STEP } from './constants';
 import { autobind } from 'core-decorators'
 import { IIngredientResponse, IIngredient, IRecipe } from '../../api/interfaces';
-import { getRelatedIngredients, getRecipesByIds, getTopIngredients } from '../../api';
+import { getRelatedIngredients, getRecipesByIds, getTopIngredients, getIngredientsByType } from '../../api';
 import './recipe-builder.css';
 import { IngredientsContainer } from './cards/ingredient-cards';
 import { RecipesContainer } from './cards/recipe-cards';
@@ -24,8 +24,9 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
   }
 
   @autobind
-  public setStyle(style: string): void {
-    this.setState({selectedMealStyle: style, selectionStep: SELECTION_STEP.CHOOSE_BASE})
+  public async setStyle(style: string): Promise<void> {
+    const styleOptions: IIngredient[] = await getIngredientsByType(style);
+    this.setState({ingredientChoices: styleOptions, selectionStep: SELECTION_STEP.CHOOSE_BASE})
   }
 
   public componentDidMount(): void {
@@ -95,7 +96,7 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
       case SELECTION_STEP.CHOOSE_CUISINE_STYLE:
         return <IngredientsContainer headerText={CHOOSE_MEAL_STYLE} selectIngredient={this.setStyle} ingredients={STYLE_OPTIONS} />;
       case SELECTION_STEP.CHOOSE_BASE:
-        return <IngredientsContainer headerText={CHOOSE_MEAL_BASE} selectIngredient={this.selectIngredient} ingredients={BASE_OPTIONS[this.state.selectedMealStyle]} />;
+        return <IngredientsContainer headerText={CHOOSE_MEAL_BASE} selectIngredient={this.selectIngredient} ingredients={this.state.ingredientChoices} />;
       default:
         return null;
     }
@@ -114,5 +115,3 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
   );
   }
 }
-
-// this.state.selectedMealStyle && this.state.selectedBase && this.state.recipeChoices.length > 5
