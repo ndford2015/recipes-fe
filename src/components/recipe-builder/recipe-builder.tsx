@@ -133,7 +133,8 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
     );
   }
 
-  @autobind getActiveTab(): JSX.Element | null {
+  @autobind 
+  getActiveTab(): JSX.Element | null {
     switch(this.state.activeTab) {
       case TAB_ID.RECIPE_BUILDER:
         return this.getSelectionStep();
@@ -144,23 +145,29 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
     }
   }
 
+  @autobind
+  public getMenu(): JSX.Element {
+    return (
+    <Menu tabular>
+      <Menu.Item 
+        active={this.state.activeTab === TAB_ID.RECIPE_BUILDER} 
+        name={TAB_ID.RECIPE_BUILDER}
+        onClick={this.handleMenuItemClick}
+        />
+      <Menu.Item 
+        name={TAB_ID.INGREDIENT_SELECTOR}
+        active={this.state.activeTab === TAB_ID.INGREDIENT_SELECTOR}
+        onClick={this.handleMenuItemClick}
+        />
+    </Menu>)
+  }
+
   public render(): JSX.Element {
     return (
     <Container>
       <Header textAlign="left" size={"large"}>{this.state.activeTab}</Header>
-      <Menu tabular>
-        <Menu.Item 
-          active={this.state.activeTab === TAB_ID.RECIPE_BUILDER} 
-          name={TAB_ID.RECIPE_BUILDER}
-          onClick={this.handleMenuItemClick}
-          />
-        <Menu.Item 
-          name={TAB_ID.INGREDIENT_SELECTOR}
-          active={this.state.activeTab === TAB_ID.INGREDIENT_SELECTOR}
-          onClick={this.handleMenuItemClick}
-          />
-      </Menu>
-      
+      {this.getMenu()}
+    
       <SelectedIngredients selectedIngredients={this.state.selectedIngredients} removeIngredient={this.removeIngredient}/>
       {this.getActiveTab()}
     </Container>
