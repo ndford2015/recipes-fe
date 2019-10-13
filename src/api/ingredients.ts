@@ -11,3 +11,8 @@ export function getTopIngredients(): Promise<IIngredient[]> {
     const url: string = `${BASE_URL}/ingredients/top/`;
     return fetch(url).then((response) => response.json());
 }
+
+export function getIngredientsByType(typeName: string): Promise<IIngredient[]> {
+    const url: string = `${BASE_URL}/ingredients/${formatIntoQueryString([typeName], "ingr_type")}`;
+    return fetch(url).then((response) => response.json());
+}
