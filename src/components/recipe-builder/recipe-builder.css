@@ -7,6 +7,12 @@
     color: black;
 }
 
+.large-card {
+    height: 140px !important;
+    width: 200px !important;
+    font-size: 3em !important;
+}
+
 .ui.card:first-child {
     margin: 1em;
 }
@@ -20,7 +26,12 @@
 }
 
 .ui.header {
-    margin: 10px !important;
+    margin-top: 20px !important;
+    margin-bottom: 0px !important;
+}
+
+.selected-ingredients {
+    margin-bottom: -10px;
 }
 
 .card-content {
@@ -34,7 +45,7 @@
 
 .ui.grid {
     justify-content: center;
-    margin: 10px;
+    margin: 10px 0px 0px 0px;
 }
 
 .ui.grid+.grid {
