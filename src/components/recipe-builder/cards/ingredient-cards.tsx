@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Grid, Header, Loader } from 'semantic-ui-react';
+import { Card, Grid, Header, Loader, Search, Icon } from 'semantic-ui-react';
 import { IIngredientsContainerProps } from './interfaces';
 import { autobind } from 'core-decorators'
 import '../recipe-builder.css';
@@ -9,7 +9,8 @@ export class IngredientsContainer extends React.PureComponent<IIngredientsContai
 
   @autobind
   public getIngredientCards(): JSX.Element[] {
-    return this.props.ingredients.map((ingredient: IIngredient) => {
+    const filteredIngredients: IIngredient[] = this.props.ingredients.filter((ingredient: IIngredient) => ingredient.name.includes(this.props.searchValue || ''))
+    return filteredIngredients.map((ingredient: IIngredient) => {
         const largeClass: string = this.props.large ? 'large-card' : '';
         const selectIngredient: () => void = () => this.props.selectIngredient(ingredient.name.toLowerCase());
         return <Card className={largeClass}
@@ -31,12 +32,17 @@ export class IngredientsContainer extends React.PureComponent<IIngredientsContai
       return null;
     }
     return (
-      <React.Fragment>
-      {<Header size="medium">{this.props.headerText}</Header>}
-      <Grid doubling stackable={false} columns={3}>
-      {this.props.isLoading ? <Loader active/> : this.getIngredientCards()}
-      </Grid>
-      </React.Fragment>
+      <div className="ingredients-container">
+        {<Header size="medium">{this.props.headerText}</Header>}
+        
+        <Grid doubling stackable={false} columns={3}>
+        {this.props.onSearch && 
+          (<Grid.Row fluid>
+            <input className="search-bar" placeholder="Filter ingredients..." type="text" onChange={this.props.onSearch} />
+          </Grid.Row>)}
+        {this.props.isLoading ? <Loader active/> : this.getIngredientCards()}
+        </Grid>
+      </div>
   );
   }
 }

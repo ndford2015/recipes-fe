@@ -55,3 +55,17 @@
 .ui.label {
     margin: 1em 0.5em;
 }
+
+.search-bar {
+    border-radius: 10px;
+    outline: none;
+    padding: 12px;
+    margin-top: 10px;
+    border-color: rgba(0, 0, 0, 0.24);
+    align-self: flex-start;
+}
+
+.ingredients-container {
+    display: flex;
+    flex-direction: column;
+}

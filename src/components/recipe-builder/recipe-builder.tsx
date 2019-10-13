@@ -1,7 +1,7 @@
-import React from 'react';
-import { Card, Container, Header, Label, Icon, Menu, MenuItemProps } from 'semantic-ui-react';
+import React, { ChangeEvent } from 'react';
+import { Card, Container, Header, Label, Icon, Menu, MenuItemProps, SearchProps } from 'semantic-ui-react';
 import { IRecipeBuilderState, IRecipeBuilderProps } from './interfaces';
-import { STYLE_OPTIONS, BASE_OPTIONS, CHOOSE_MEAL_STYLE, CHOOSE_MEAL_BASE, SELECT_INGREDIENTS, SELECTION_STEP, TAB_ID } from './constants';
+import { STYLE_OPTIONS, CHOOSE_MEAL_STYLE, CHOOSE_MEAL_BASE, SELECT_INGREDIENTS, SELECTION_STEP, TAB_ID } from './constants';
 import { autobind } from 'core-decorators'
 import { IIngredientResponse, IIngredient, IRecipe } from '../../api/interfaces';
 import { getRelatedIngredients, getRecipesByIds, getTopIngredients, getIngredientsByType } from '../../api';
@@ -15,6 +15,7 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
     this.state = {
       selectedIngredients: [],
       ingredientChoices: [],
+      searchString: '',
       highlightedRecipes: [],
       recipeChoices: [],
       selectedMealStyle: '',
@@ -100,7 +101,12 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
   public getSelectionStep(): JSX.Element | null {
     switch(this.state.selectionStep) {
       case SELECTION_STEP.CHOOSE_CUISINE_STYLE:
-        return <IngredientsContainer large headerText={CHOOSE_MEAL_STYLE} selectIngredient={this.setStyle} ingredients={STYLE_OPTIONS} />;
+        return <IngredientsContainer 
+          large 
+          headerText={CHOOSE_MEAL_STYLE} 
+          selectIngredient={this.setStyle} 
+          ingredients={STYLE_OPTIONS} 
+        />;
       case SELECTION_STEP.CHOOSE_BASE:
         return <IngredientsContainer headerText={CHOOSE_MEAL_BASE} selectIngredient={this.selectIngredient} ingredients={this.state.ingredientChoices} />;
       case SELECTION_STEP.SELECT_INGREDIENTS:
@@ -123,6 +129,8 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
         isLoading={this.state.isLoading} 
         selectIngredient={this.selectIngredient} 
         ingredients={this.state.ingredientChoices} 
+        onSearch={this.handleSearchChange}
+        searchValue={this.state.searchString}
       />
       : null
     return (
@@ -162,12 +170,15 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
     </Menu>)
   }
 
+  @autobind handleSearchChange(e: ChangeEvent<HTMLInputElement>): void {
+    this.setState({searchString: e.target.value});
+  }
+
   public render(): JSX.Element {
     return (
     <Container>
       <Header textAlign="left" size={"large"}>{this.state.activeTab}</Header>
       {this.getMenu()}
-    
       <SelectedIngredients selectedIngredients={this.state.selectedIngredients} removeIngredient={this.removeIngredient}/>
       {this.getActiveTab()}
     </Container>
