@@ -1,7 +1,7 @@
 import React from 'react';
-import { Card, Container, Header, Label, Icon } from 'semantic-ui-react';
+import { Card, Container, Header, Label, Icon, Menu, MenuItemProps } from 'semantic-ui-react';
 import { IRecipeBuilderState, IRecipeBuilderProps } from './interfaces';
-import { STYLE_OPTIONS, BASE_OPTIONS, CHOOSE_MEAL_STYLE, CHOOSE_MEAL_BASE, SELECT_INGREDIENTS, SELECTION_STEP } from './constants';
+import { STYLE_OPTIONS, BASE_OPTIONS, CHOOSE_MEAL_STYLE, CHOOSE_MEAL_BASE, SELECT_INGREDIENTS, SELECTION_STEP, TAB_ID } from './constants';
 import { autobind } from 'core-decorators'
 import { IIngredientResponse, IIngredient, IRecipe } from '../../api/interfaces';
 import { getRelatedIngredients, getRecipesByIds, getTopIngredients, getIngredientsByType } from '../../api';
@@ -19,7 +19,8 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
       recipeChoices: [],
       selectedMealStyle: '',
       isLoading: false,
-      selectionStep: SELECTION_STEP.CHOOSE_CUISINE_STYLE
+      selectionStep: SELECTION_STEP.CHOOSE_CUISINE_STYLE,
+      activeTab: TAB_ID.RECIPE_BUILDER
     }
   }
 
@@ -73,12 +74,16 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
   public removeIngredient(removeIndex: number): void {
     this.setState({selectedIngredients: this.state.selectedIngredients.filter((_, i: number) => i !== removeIndex)}, async () => {
       if (!this.state.selectedIngredients.length) {
-        this.clearSelection();
-        this.setInitialIngredients();
+        this.resetRecipeBuilder();
       } else {
         this.reloadRelatedIngredients(this.state.selectedIngredients);
       }
     });
+  }
+
+  public resetRecipeBuilder(): void {
+    this.clearSelection();
+    this.setInitialIngredients();
   }
 
   @autobind
@@ -86,6 +91,7 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
     this.setState({
       selectionStep: SELECTION_STEP.CHOOSE_CUISINE_STYLE,
       selectedMealStyle: '',
+      selectedIngredients: [],
       highlightedRecipes: []
     })
   }
@@ -94,9 +100,45 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
   public getSelectionStep(): JSX.Element | null {
     switch(this.state.selectionStep) {
       case SELECTION_STEP.CHOOSE_CUISINE_STYLE:
-        return <IngredientsContainer headerText={CHOOSE_MEAL_STYLE} selectIngredient={this.setStyle} ingredients={STYLE_OPTIONS} />;
+        return <IngredientsContainer large headerText={CHOOSE_MEAL_STYLE} selectIngredient={this.setStyle} ingredients={STYLE_OPTIONS} />;
       case SELECTION_STEP.CHOOSE_BASE:
         return <IngredientsContainer headerText={CHOOSE_MEAL_BASE} selectIngredient={this.selectIngredient} ingredients={this.state.ingredientChoices} />;
+      case SELECTION_STEP.SELECT_INGREDIENTS:
+        return this.getIngredientSelector();
+      default:
+        return null;
+    }
+  }
+  
+  @autobind
+  public handleMenuItemClick(e: any, { name }: MenuItemProps): void {
+    this.setState({activeTab: name as TAB_ID}, async () => this.resetRecipeBuilder());
+  }
+
+  @autobind 
+  public getIngredientSelector(): JSX.Element | null {
+    const ingredients: JSX.Element | null = (!this.state.selectedIngredients.length || this.state.recipeChoices.length > 5)
+      ? <IngredientsContainer 
+        headerText={SELECT_INGREDIENTS} 
+        isLoading={this.state.isLoading} 
+        selectIngredient={this.selectIngredient} 
+        ingredients={this.state.ingredientChoices} 
+      />
+      : null
+    return (
+      <React.Fragment>
+        <RecipesContainer isLoading={this.state.isLoading} recipes={this.state.highlightedRecipes}/>
+        {ingredients}
+      </React.Fragment>
+    );
+  }
+
+  @autobind getActiveTab(): JSX.Element | null {
+    switch(this.state.activeTab) {
+      case TAB_ID.RECIPE_BUILDER:
+        return this.getSelectionStep();
+      case TAB_ID.INGREDIENT_SELECTOR:
+        return this.getIngredientSelector();
       default:
         return null;
     }
@@ -105,12 +147,22 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
   public render(): JSX.Element {
     return (
     <Container>
-      <Header centered size={"large"}>Recipe Builder</Header>
+      <Header textAlign="left" size={"large"}>{this.state.activeTab}</Header>
+      <Menu tabular>
+        <Menu.Item 
+          active={this.state.activeTab === TAB_ID.RECIPE_BUILDER} 
+          name={TAB_ID.RECIPE_BUILDER}
+          onClick={this.handleMenuItemClick}
+          />
+        <Menu.Item 
+          name={TAB_ID.INGREDIENT_SELECTOR}
+          active={this.state.activeTab === TAB_ID.INGREDIENT_SELECTOR}
+          onClick={this.handleMenuItemClick}
+          />
+      </Menu>
+      
       <SelectedIngredients selectedIngredients={this.state.selectedIngredients} removeIngredient={this.removeIngredient}/>
-      {this.getSelectionStep()}
-      <RecipesContainer isLoading={this.state.isLoading} recipes={this.state.highlightedRecipes}/>
-      {(this.state.ingredientChoices.length && (!this.state.selectedIngredients.length || this.state.recipeChoices.length > 5)) && 
-        <IngredientsContainer headerText={SELECT_INGREDIENTS} isLoading={this.state.isLoading} prelimsSelected selectIngredient={this.selectIngredient} ingredients={this.state.ingredientChoices} />}
+      {this.getActiveTab()}
     </Container>
   );
   }

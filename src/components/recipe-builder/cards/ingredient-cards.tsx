@@ -10,19 +10,29 @@ export class IngredientsContainer extends React.PureComponent<IIngredientsContai
   @autobind
   public getIngredientCards(): JSX.Element[] {
     return this.props.ingredients.map((ingredient: IIngredient) => {
+        const largeClass: string = this.props.large ? 'large-card' : '';
         const selectIngredient: () => void = () => this.props.selectIngredient(ingredient.name.toLowerCase());
-        return <Card centered onClick={selectIngredient} title={toPascalCase(ingredient.name)} content={this.getCardContent(toPascalCase(ingredient.name))}/>
+        return <Card className={largeClass}
+                  centered 
+                  onClick={selectIngredient} 
+                  title={toPascalCase(ingredient.name)} 
+                  content={this.getCardContent(toPascalCase(ingredient.name))}
+                />
     })
   }
 
+  @autobind
   public getCardContent(content: string): JSX.Element {
       return <div className="card-content">{content}</div>
   }
 
-  public render(): JSX.Element {
+  public render(): JSX.Element | null {
+    if (!this.props.ingredients.length) {
+      return null;
+    }
     return (
       <React.Fragment>
-      {<Header dividing size="medium">{this.props.headerText}</Header>}
+      {<Header size="medium">{this.props.headerText}</Header>}
       <Grid doubling stackable={false} columns={3}>
       {this.props.isLoading ? <Loader active/> : this.getIngredientCards()}
       </Grid>

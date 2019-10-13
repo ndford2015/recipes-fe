@@ -1,5 +1,5 @@
 import { IIngredient, IRecipe } from "../../api/interfaces";
-import { SELECTION_STEP } from "./constants";
+import { SELECTION_STEP, TAB_ID } from "./constants";
 
 export interface IRecipeBuilderState {
     selectedIngredients: string[];
@@ -9,6 +9,7 @@ export interface IRecipeBuilderState {
     selectedMealStyle: string;
     selectionStep: SELECTION_STEP;
     isLoading: boolean;
+    activeTab: TAB_ID;
 }
 
 export interface IRecipeBuilderProps {

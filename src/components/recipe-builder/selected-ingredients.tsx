@@ -12,7 +12,10 @@ export class SelectedIngredients extends React.PureComponent<ISelectedIngredient
       })
     }
 
-  public render(): JSX.Element {
-    return (<div>{this.props.selectedIngredients.length > 0 && 'Selected Ingredients: '}{this.getSelectedIngredientLabels()}</div>);
+  public render(): JSX.Element | null {
+    if (!this.props.selectedIngredients.length) {
+      return null;
+    }
+    return (<div className="selected-ingredients">{'Selected Ingredients: '}{this.getSelectedIngredientLabels()}</div>);
   }
 }
