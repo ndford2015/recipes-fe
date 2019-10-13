@@ -59,13 +59,36 @@
 .search-bar {
     border-radius: 10px;
     outline: none;
-    padding: 12px;
     margin-top: 10px;
     border-color: rgba(0, 0, 0, 0.24);
     align-self: flex-start;
+    background-image:url('http://endlessicons.com/wp-content/uploads/2015/08/search-icon-2-614x460.png');
+    background-size: 40px;
+    background-repeat:no-repeat;
+    background-position:left center;outline:0;
+    padding: 10px 20px;
+    width:30px;
+    border:2px solid #1a1a1a3f;
+    transition-duration: 300ms;
+}
+
+.search-bar:focus {
+    width: 100%;
+    padding-left: 50px;
+}
+
+.search-bar:focus:hover {
+    cursor: text;
+}
+.search-bar:hover {
+    cursor: pointer;
 }
 
 .ingredients-container {
     display: flex;
     flex-direction: column;
+}
+
+.ingredient-card {
+    width: auto !important;
 }

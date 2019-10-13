@@ -13,7 +13,7 @@ export class IngredientsContainer extends React.PureComponent<IIngredientsContai
     return filteredIngredients.map((ingredient: IIngredient) => {
         const largeClass: string = this.props.large ? 'large-card' : '';
         const selectIngredient: () => void = () => this.props.selectIngredient(ingredient.name.toLowerCase());
-        return <Card className={largeClass}
+        return <Card className={`ingredient-card ${largeClass}`}
                   centered 
                   onClick={selectIngredient} 
                   title={toPascalCase(ingredient.name)} 
@@ -34,12 +34,10 @@ export class IngredientsContainer extends React.PureComponent<IIngredientsContai
     return (
       <div className="ingredients-container">
         {<Header size="medium">{this.props.headerText}</Header>}
-        
-        <Grid doubling stackable={false} columns={3}>
         {this.props.onSearch && 
-          (<Grid.Row fluid>
-            <input className="search-bar" placeholder="Filter ingredients..." type="text" onChange={this.props.onSearch} />
-          </Grid.Row>)}
+            <input className="search-bar" placeholder="Filter ingredients..." type="text" onChange={this.props.onSearch} />}
+        <Grid doubling stackable={false} columns={3}>
+        
         {this.props.isLoading ? <Loader active/> : this.getIngredientCards()}
         </Grid>
       </div>
