@@ -57,24 +57,25 @@
 }
 
 .search-bar {
-    border-radius: 10px;
     outline: none;
     margin-top: 10px;
-    border-color: rgba(0, 0, 0, 0.24);
+    height: 40px;
     align-self: flex-start;
-    background-image:url('http://endlessicons.com/wp-content/uploads/2015/08/search-icon-2-614x460.png');
-    background-size: 40px;
-    background-repeat:no-repeat;
-    background-position:left center;outline:0;
-    padding: 10px 20px;
-    width:30px;
-    border:2px solid #1a1a1a3f;
-    transition-duration: 300ms;
+    width: 45px !important;
+    display: flex !important;
+    flex-direction: row;
+    transition-duration: 250ms;
 }
 
-.search-bar:focus {
-    width: 100%;
-    padding-left: 50px;
+.search-bar > input {
+    padding: 5px;
+    border-radius: 10px !important;
+}
+
+.search-bar:focus-within {
+    width: 100% !important;
+    border-color: rgb(202, 182, 0);
+
 }
 
 .search-bar:focus:hover {

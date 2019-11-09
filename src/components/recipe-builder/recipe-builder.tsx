@@ -65,7 +65,8 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
     this.setState(
       {
         ingredientChoices: relatedIngredientResponse.ingredients,
-        recipeChoices: relatedIngredientResponse.recipeIds
+        recipeChoices: relatedIngredientResponse.recipeIds,
+        searchString: ''
       },
       () => this.getRecipeHighlights()
     )

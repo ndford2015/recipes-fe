@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Grid, Header, Loader, Search, Icon } from 'semantic-ui-react';
+import { Card, Grid, Header, Loader, Input } from 'semantic-ui-react';
 import { IIngredientsContainerProps } from './interfaces';
 import { autobind } from 'core-decorators'
 import '../recipe-builder.css';
@@ -35,7 +35,7 @@ export class IngredientsContainer extends React.PureComponent<IIngredientsContai
       <div className="ingredients-container">
         {<Header size="medium">{this.props.headerText}</Header>}
         {this.props.onSearch && 
-            <input className="search-bar" placeholder="Filter ingredients..." type="text" onChange={this.props.onSearch} />}
+            <Input className="search-bar" placeholder="Filter ingredients..." icon="search" onChange={this.props.onSearch} />}
         <Grid doubling stackable={false} columns={3}>
         
         {this.props.isLoading ? <Loader active/> : this.getIngredientCards()}
