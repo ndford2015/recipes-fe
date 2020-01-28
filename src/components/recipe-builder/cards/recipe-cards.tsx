@@ -29,8 +29,8 @@ export class RecipesContainer extends React.PureComponent<IRecipesContainerProps
     
     return (
       <React.Fragment>
-      <Header size="medium">{'Select a recipe!'}</Header>  
-      <Grid  stretched centered columns={2}>
+      <Header textAlign="left" size="medium">{'Select a recipe!'}</Header>  
+      <Grid  stretched  columns={2}>
       {this.props.isLoading ? <Loader inline active/> : this.getRecipeCards()}
       </Grid>
       </React.Fragment>

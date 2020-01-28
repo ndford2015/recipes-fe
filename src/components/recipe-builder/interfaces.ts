@@ -9,6 +9,7 @@ export interface IRecipeBuilderState {
     selectedMealStyle: string;
     selectionStep: SELECTION_STEP;
     isLoading: boolean;
+    searchString: string | undefined;
     activeTab: TAB_ID;
 }
 
