@@ -1,50 +1,47 @@
-.ui.centered.card {
-    height: 50px;
-    justify-content: center;
-    font-size:1.5em;
-    margin: 0.5em !important;
-    padding: 0.5em;
-    color: black;
-}
-
 .large-card {
     height: 140px !important;
     width: 200px !important;
-    font-size: 3em !important;
+    font-size: 4em !important;
+}
+.large-card:first-child {
+    margin-left: 10px !important;
 }
 
 .ui.card:first-child {
-    margin: 1em;
+    margin: 10px;
 }
 
 .ui.card {
-    margin: 1em;
+    margin: 10px;
 }
 
 .ui.card:last-child {
-    margin: 1em;
+    margin: 10px;
 }
 
 .ui.header {
     margin-top: 20px !important;
+    margin-left: 10px !important;
     margin-bottom: 0px !important;
 }
 
 .selected-ingredients {
-    margin-bottom: -10px;
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
 }
 
 .card-content {
     line-height: 1.5em;
     text-decoration: none;
     text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
     font-size: 0.8em;
 }
 
+
 .ui.grid {
-    justify-content: center;
+    justify-content: left;
     margin: 10px 0px 0px 0px;
 }
 
@@ -52,13 +49,16 @@
     margin: 0;
 }
 
-.ui.label {
-    margin: 1em 0.5em;
+.ui.label, ui.label:first-child, ui.label:last-child {
+    margin: 0px 0px 0px 10px !important;
 }
+
+
 
 .search-bar {
     outline: none;
-    margin-top: 10px;
+    margin-top: 20px;
+    margin-left: 10px;
     height: 40px;
     align-self: flex-start;
     width: 45px !important;
@@ -92,4 +92,14 @@
 
 .ingredient-card {
     width: auto !important;
+    height: 50px !important;
+    justify-content: center;
+    font-size:1.5em;
+    margin: 10px !important;
+    padding: 1em !important;
+    color: rgb(71, 71, 71);
+}
+
+.ingredient-card:hover{
+    color: rgb(24, 24, 24);
 }
