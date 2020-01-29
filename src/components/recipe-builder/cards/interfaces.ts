@@ -9,6 +9,8 @@ export interface IIngredientsContainerProps {
     // specify whether to have 'larger' cards
     large?: boolean;
     searchValue?: string | undefined;
+    selectedIngredients: string[];
+    removeIngredient(ingredientIndex: number): void;
     onSearch?(event: ChangeEvent<HTMLInputElement>): void;
     selectIngredient(ingredient: string): void;
 }

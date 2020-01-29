@@ -10,7 +10,7 @@ export class RecipesContainer extends React.PureComponent<IRecipesContainerProps
     public getRecipeCards(): JSX.Element[] {
       return this.props.recipes.map((recipe: IRecipe) => {
           return (
-              <Card href={recipe.url} target="_blank" id={recipe.id}>
+              <Card className="recipe-card" href={recipe.url} target="_blank" id={recipe.id}>
                 <Card.Content>
                     <Card.Header>{recipe.name}</Card.Header>
                     <Card.Description><div className={"recipe-card-content"}>{recipe.description}</div></Card.Description>
@@ -28,12 +28,12 @@ export class RecipesContainer extends React.PureComponent<IRecipesContainerProps
     }
     
     return (
-      <React.Fragment>
+      <div className="recipes-container">
       <Header textAlign="left" size="medium">{'Select a recipe!'}</Header>  
-      <Grid  stretched  columns={2}>
+      <Grid stretched columns={2}>
       {this.props.isLoading ? <Loader inline active/> : this.getRecipeCards()}
       </Grid>
-      </React.Fragment>
+      </div>
   );
   }
 }

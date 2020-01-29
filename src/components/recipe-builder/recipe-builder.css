@@ -1,8 +1,24 @@
+.app-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.recipes-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.recipe-card {
+    max-width: 40% !important;
+    width: auto !important;
+}
+
 .large-card {
     height: 140px !important;
     width: 200px !important;
     font-size: 4em !important;
 }
+
 .large-card:first-child {
     margin-left: 10px !important;
 }
@@ -20,16 +36,22 @@
 }
 
 .ui.header {
-    margin-top: 20px !important;
-    margin-left: 10px !important;
+    margin-top: 10px !important;
+    margin-left: 5px !important;
     margin-bottom: 0px !important;
 }
 
 .selected-ingredients {
-    margin: 10px;
+    margin: 5px;
+    padding: 10px;
+    width: 160px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: flex-start;
+    flex-wrap: wrap;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    box-shadow: 0 0.5px 1px 0 rgba(0, 0, 0, 0.2), 0 0.5px 1px 0 rgba(0, 0, 0, 0.19);
 }
 
 .card-content {
@@ -50,32 +72,31 @@
 }
 
 .ui.label, ui.label:first-child, ui.label:last-child {
-    margin: 0px 0px 0px 10px !important;
+    margin: 5px !important;
 }
-
-
 
 .search-bar {
     outline: none;
-    margin-top: 20px;
-    margin-left: 10px;
-    height: 40px;
+    margin: 10px 5px;
+    height: 30px;
     align-self: flex-start;
     width: 45px !important;
     display: flex !important;
     flex-direction: row;
+    border-radius: 5px !important;
+    box-shadow: 4px 1px 3px 1px rgba(0, 0, 0, 0.2), 1px 1px 3px 0px rgba(0, 0, 0, 0.19);
     transition-duration: 250ms;
 }
 
 .search-bar > input {
     padding: 5px;
-    border-radius: 10px !important;
+    
+    
 }
 
 .search-bar:focus-within {
-    width: 100% !important;
+    width: 90% !important;
     border-color: rgb(202, 182, 0);
-
 }
 
 .search-bar:focus:hover {
@@ -86,18 +107,27 @@
 }
 
 .ingredients-container {
+    min-width: 30%;
+    width: 30%;
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid lightgrey;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.19);
     display: flex;
+    margin-right: 50px;
+    margin-top:15px;
     flex-direction: column;
 }
 
 .ingredient-card {
     width: auto !important;
-    height: 50px !important;
+    height: 10px !important;
     justify-content: center;
-    font-size:1.5em;
-    margin: 10px !important;
-    padding: 1em !important;
+    font-size:1.3em;
+    margin: 5px !important;
+    padding: 0.7em !important;
     color: rgb(71, 71, 71);
+    white-space: nowrap;
 }
 
 .ingredient-card:hover{

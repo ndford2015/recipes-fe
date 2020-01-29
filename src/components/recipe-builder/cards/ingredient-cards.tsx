@@ -5,16 +5,16 @@ import { autobind } from 'core-decorators'
 import '../recipe-builder.css';
 import { IIngredient } from '../../../api/interfaces';
 import { toPascalCase } from '../utils';
+import { SelectedIngredients } from '../selected-ingredients';
 export class IngredientsContainer extends React.PureComponent<IIngredientsContainerProps> {
 
   @autobind
   public getIngredientCards(): JSX.Element[] {
     const filteredIngredients: IIngredient[] = this.props.ingredients.filter((ingredient: IIngredient) => ingredient.name.includes(this.props.searchValue || ''))
     return filteredIngredients.map((ingredient: IIngredient) => {
-        const largeClass: string = this.props.large ? 'large-card' : '';
         const selectIngredient: () => void = () => this.props.selectIngredient(ingredient.name.toLowerCase());
         return <Card 
-                  className={`ingredient-card ${largeClass}`}
+                  className="ingredient-card"
                   onClick={selectIngredient} 
                   title={toPascalCase(ingredient.name)} 
                   content={this.getCardContent(toPascalCase(ingredient.name))}
@@ -28,16 +28,13 @@ export class IngredientsContainer extends React.PureComponent<IIngredientsContai
   }
 
   public render(): JSX.Element | null {
-    if (!this.props.ingredients.length) {
-      return null;
-    }
     return (
       <div className="ingredients-container">
         {<Header textAlign="left" size="medium">{this.props.headerText}</Header>}
         {this.props.onSearch && 
         <Input className="search-bar" placeholder="Filter ingredients..." icon="search" onChange={this.props.onSearch} />}
-        <Grid textAlign="left" doubling stackable={false} columns={3}>
-        
+        <SelectedIngredients selectedIngredients={this.props.selectedIngredients} removeIngredient={this.props.removeIngredient}/>
+        <Grid textAlign="left" doubling stackable={false} columns={4}>
         {this.props.isLoading ? <Loader active/> : this.getIngredientCards()}
         </Grid>
       </div>
