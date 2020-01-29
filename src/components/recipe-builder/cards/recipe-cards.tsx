@@ -16,7 +16,6 @@ export class RecipesContainer extends React.PureComponent<IRecipesContainerProps
                     <Card.Description><div className={"recipe-card-content"}>{recipe.description}</div></Card.Description>
                 </Card.Content>
               </Card>
-        
           )
         })
     }
@@ -29,10 +28,10 @@ export class RecipesContainer extends React.PureComponent<IRecipesContainerProps
     
     return (
       <React.Fragment>
-      <Header textAlign="left" size="medium">{'Select a recipe!'}</Header>  
-      <Grid  stretched  columns={2}>
-      {this.props.isLoading ? <Loader inline active/> : this.getRecipeCards()}
-      </Grid>
+        <Header textAlign="left" size="medium">{'Select a recipe!'}</Header>  
+        <Grid  stretched  columns={2}>
+        {this.props.isLoading ? <Loader inline active/> : this.getRecipeCards()}
+        </Grid>
       </React.Fragment>
   );
   }

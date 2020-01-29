@@ -41,7 +41,8 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
     this.setState({ingredientChoices: topIngredients, isLoading: false});
   }
 
-  @autobind async selectIngredient(ingredient: string): Promise<void> {
+  @autobind 
+  async selectIngredient(ingredient: string): Promise<void> {
     const selectedIngredients: string[] = [...this.state.selectedIngredients, ingredient]; 
     if (this.state.selectionStep !== SELECTION_STEP.SELECT_INGREDIENTS) {
       this.setState({selectionStep: SELECTION_STEP.SELECT_INGREDIENTS});
