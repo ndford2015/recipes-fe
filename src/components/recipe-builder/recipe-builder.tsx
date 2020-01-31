@@ -4,7 +4,7 @@ import { IRecipeBuilderState, IRecipeBuilderProps } from './interfaces';
 import { STYLE_OPTIONS, CHOOSE_MEAL_STYLE, CHOOSE_MEAL_BASE, SELECT_INGREDIENTS, SELECTION_STEP, TAB_ID } from './constants';
 import { autobind } from 'core-decorators'
 import { IIngredientResponse, IIngredient, IRecipe } from '../../api/interfaces';
-import { getRelatedIngredients, getRecipesByIds, getTopIngredients, getIngredientsByType } from '../../api';
+import { getRelatedIngredients, getRecipesByIds, getTopIngredients, getIngredientsByType, getRandomRecipes } from '../../api';
 import './recipe-builder.css';
 import { IngredientsContainer } from './cards/ingredient-cards';
 import { RecipesContainer } from './cards/recipe-cards';
@@ -32,13 +32,14 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
   }
 
   public componentDidMount(): void {
-    this.setInitialIngredients();
+    this.setInitialIngredientsAndRecipes();
   }
   
-  public async setInitialIngredients(): Promise<void> {
+  public async setInitialIngredientsAndRecipes(): Promise<void> {
     this.setState({isLoading: true})
     const topIngredients: IIngredient[] = await getTopIngredients();
-    this.setState({ingredientChoices: topIngredients, isLoading: false});
+    const topRecipes: IRecipe[] = await getRandomRecipes(100);
+    this.setState({ingredientChoices: topIngredients, isLoading: false, highlightedRecipes: topRecipes});
   }
 
   @autobind async selectIngredient(ingredient: string): Promise<void> {
@@ -84,7 +85,7 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
 
   public resetRecipeBuilder(): void {
     this.clearSelection();
-    this.setInitialIngredients();
+    this.setInitialIngredientsAndRecipes();
   }
 
   @autobind

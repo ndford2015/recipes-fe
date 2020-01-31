@@ -46,7 +46,7 @@
     padding: 10px;
     width: 160px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
     flex-wrap: wrap;
     border: 1px solid lightgrey;
