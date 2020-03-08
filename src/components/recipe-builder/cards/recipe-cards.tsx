@@ -29,10 +29,11 @@ export class RecipesContainer extends React.PureComponent<IRecipesContainerProps
     
     return (
       <div className="recipes-container">
-      <Header textAlign="left" size="medium">{'Select a recipe!'}</Header>  
-      <Grid stretched columns={2}>
-      {this.props.isLoading ? <Loader inline active/> : this.getRecipeCards()}
-      </Grid>
+        <Header textAlign="center" size="medium">{'Select a Recipe!'}</Header>  
+        {this.props.isLoading ? <Loader inline active/> :
+        (<div className="recipe-cards">
+          {this.getRecipeCards()}
+        </div>)}
       </div>
   );
   }

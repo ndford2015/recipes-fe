@@ -1,1 +1,1 @@
-export const BASE_URL: string = 'http://10.0.0.88:8080'
+export const BASE_URL: string = 'http://10.0.0.89:8080'

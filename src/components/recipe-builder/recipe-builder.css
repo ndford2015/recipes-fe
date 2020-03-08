@@ -1,25 +1,56 @@
 .app-container {
     display: flex;
     flex-direction: row;
+    height: 100%;
+    padding: 0px 32px;
+    width: 100%;
 }
 
-body {
-    background-color: ivory !important;
+.ui.container {
+    height: 100vh;
+    overflow: hidden;
+    width: 100%;
 }
-.recipes-container {
+.ui.left.aligned.header {
+    margin-left: 32px !important;
+}
+.recipe-cards {
     display: flex;
-    flex-direction: column;
-    width: 500px;
+    flex-basis: 60%;
+    flex-direction: row;
+    align-items:flex-start;
+    white-space: wrap;
+    flex-wrap: wrap;
+    position: relative;
+    padding-right:9.6px;
+    height: 100%;
+    overflow: hidden;
+    margin-top: 16px;
+    
 }
+
+.recipes-container {
+    margin-bottom: 50px;
+    padding-bottom: 64px;
+    overflow:hidden;
+    width: 100%;
+    align-items:center;
+    
+}
+
+.recipes-container .ui.inline.loader.active {
+    margin-top:128px;
+}
+
+.recipe-cards:hover {
+    overflow: auto;
+    padding-right: 0px;
+}
+
+
 
 .recipe-card {
-    max-width: 40% !important;
-    width: auto !important;
-    color: ivory;
-}
-
-.ui.card>.content>.header, .ui.card>.content>.description {
-    color: ivory;
+    max-width: 30% !important;
 }
 
 .large-card {
@@ -38,7 +69,8 @@ body {
 
 .ui.card, a.ui.card:hover {
     margin: 10px;
-    background-color: #787565;
+    box-shadow: 4px 4px 8px 1px #d4d4d5;
+
 }
 
 .ui.card:last-child {
@@ -61,9 +93,6 @@ body {
     flex-wrap: wrap;
     border: 1px solid lightgrey;
     border-radius: 5px;
-    box-shadow: 0 0.5px 1px 0 rgba(0, 0, 0, 0.2), 0 0.5px 1px 0 rgba(0, 0, 0, 0.19);
-    background-color: #787565;
-    color: ivory;
 }
 
 .card-content {
@@ -71,7 +100,6 @@ body {
     text-decoration: none;
     text-overflow: ellipsis;
     font-size: 0.8em;
-    color: white !important;
 }
 
 
@@ -97,43 +125,39 @@ body {
     display: flex !important;
     flex-direction: row;
     border-radius: 5px !important;
-    box-shadow: 4px 1px 3px 1px rgba(0, 0, 0, 0.2), 1px 1px 3px 0px rgba(0, 0, 0, 0.19);
     transition-duration: 250ms;
+    width: 90% !important;
 }
+
 
 .search-bar > input {
     padding: 5px;
-    background-color: ivory !important;
-    
 }
 
-.search-bar:focus-within {
-    width: 90% !important;
-    border-color: rgb(202, 182, 0);
-}
-
-.search-bar:focus:hover {
+.search-bar:focus {
     cursor: text;
 }
-.search-bar:hover {
-    cursor: pointer;
+
+.ui.input>input:focus {
+    border-color: lightgray;
+    cursor: text;
 }
 
-.ingredients-container, .recipes-container {
+.ingredients-container {
     min-width: 30%;
     border-radius: 5px;
     padding: 5px;
     border: 1px solid lightgrey;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0px 0px 6px 1px rgba(0, 0, 0, 0.2);
     display: flex;
     margin-right: 50px;
     margin-top:15px;
     flex-direction: column;
-    background-color: rgb(235, 229, 208);
+    margin-bottom: 64px;
 }
 
 .ingredients-container {
-    width: 30%;
+    flex-basis: 30%;
 }
 
 .ingredient-card {
@@ -145,6 +169,24 @@ body {
     padding: 0.7em !important;
     color: rgb(71, 71, 71);
     white-space: nowrap;
+}
+
+.ingredient-choices {
+    overflow-y: hidden;
+    overflow-x: hidden;
+    padding-bottom: 24px;
+    padding-right: 9.6px !important;
+}
+
+.ingredient-choices:hover {
+    overflow-y: scroll;
+    padding-right: 0px !important;
+}
+::-webkit-scrollbar {
+    width: 10px !important;
+}
+::-webkit-scrollbar-track {
+    background: white !important;
 }
 
 .ingredient-card:hover{

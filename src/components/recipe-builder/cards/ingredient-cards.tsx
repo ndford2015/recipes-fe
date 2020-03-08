@@ -34,8 +34,8 @@ export class IngredientsContainer extends React.PureComponent<IIngredientsContai
         {this.props.onSearch && 
         <Input className="search-bar" placeholder="Filter ingredients..." icon="search" onChange={this.props.onSearch} />}
         <SelectedIngredients selectedIngredients={this.props.selectedIngredients} removeIngredient={this.props.removeIngredient}/>
-        <Grid textAlign="left" doubling stackable={false} columns={4}>
-        {this.props.isLoading ? <Loader active/> : this.getIngredientCards()}
+        <Grid className="ingredient-choices" textAlign="left" doubling stackable={false} columns={4}>
+        {this.props.isLoading ? null : this.getIngredientCards()}
         </Grid>
       </div>
   );
