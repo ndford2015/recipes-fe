@@ -1,8 +1,64 @@
+.app-container {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    padding: 0px 32px;
+    width: 100%;
+}
+
+.ui.container {
+    height: 100vh;
+    overflow: hidden;
+    width: 100%;
+}
+.ui.left.aligned.header {
+    margin-left: 32px !important;
+}
+.recipe-cards {
+    display: flex;
+    flex-basis: 60%;
+    flex-direction: row;
+    align-items:flex-start;
+    white-space: wrap;
+    flex-wrap: wrap;
+    position: relative;
+    padding-right:9.6px;
+    height: 100%;
+    overflow: hidden;
+    margin-top: 16px;
+    
+}
+
+.recipes-container {
+    margin-bottom: 50px;
+    padding-bottom: 64px;
+    overflow:hidden;
+    width: 100%;
+    align-items:center;
+    
+}
+
+.recipes-container .ui.inline.loader.active {
+    margin-top:128px;
+}
+
+.recipe-cards:hover {
+    overflow: auto;
+    padding-right: 0px;
+}
+
+
+
+.recipe-card {
+    max-width: 30% !important;
+}
+
 .large-card {
     height: 140px !important;
     width: 200px !important;
     font-size: 4em !important;
 }
+
 .large-card:first-child {
     margin-left: 10px !important;
 }
@@ -11,8 +67,10 @@
     margin: 10px;
 }
 
-.ui.card {
+.ui.card, a.ui.card:hover {
     margin: 10px;
+    box-shadow: 4px 4px 8px 1px #d4d4d5;
+
 }
 
 .ui.card:last-child {
@@ -20,16 +78,21 @@
 }
 
 .ui.header {
-    margin-top: 20px !important;
-    margin-left: 10px !important;
+    margin-top: 10px !important;
+    margin-left: 5px !important;
     margin-bottom: 0px !important;
 }
 
 .selected-ingredients {
-    margin: 10px;
+    margin: 5px;
+    padding: 10px;
+    width: 160px;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
+    flex-wrap: wrap;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
 }
 
 .card-content {
@@ -50,54 +113,80 @@
 }
 
 .ui.label, ui.label:first-child, ui.label:last-child {
-    margin: 0px 0px 0px 10px !important;
+    margin: 5px !important;
 }
-
-
 
 .search-bar {
     outline: none;
-    margin-top: 20px;
-    margin-left: 10px;
-    height: 40px;
+    margin: 10px 5px;
+    height: 30px;
     align-self: flex-start;
     width: 45px !important;
     display: flex !important;
     flex-direction: row;
+    border-radius: 5px !important;
     transition-duration: 250ms;
+    width: 90% !important;
 }
+
 
 .search-bar > input {
     padding: 5px;
-    border-radius: 10px !important;
 }
 
-.search-bar:focus-within {
-    width: 100% !important;
-    border-color: rgb(202, 182, 0);
-
-}
-
-.search-bar:focus:hover {
+.search-bar:focus {
     cursor: text;
 }
-.search-bar:hover {
-    cursor: pointer;
+
+.ui.input>input:focus {
+    border-color: lightgray;
+    cursor: text;
 }
 
 .ingredients-container {
+    min-width: 30%;
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid lightgrey;
+    box-shadow: 0px 0px 6px 1px rgba(0, 0, 0, 0.2);
     display: flex;
+    margin-right: 50px;
+    margin-top:15px;
     flex-direction: column;
+    margin-bottom: 64px;
+}
+
+.ingredients-container {
+    flex-basis: 30%;
 }
 
 .ingredient-card {
     width: auto !important;
-    height: 50px !important;
+    height: 10px !important;
     justify-content: center;
-    font-size:1.5em;
-    margin: 10px !important;
-    padding: 1em !important;
+    font-size:1.3em;
+    margin: 5px !important;
+    padding: 0.7em !important;
     color: rgb(71, 71, 71);
+    white-space: nowrap;
+}
+
+.ingredient-choices {
+    overflow-y: hidden;
+    overflow-x: hidden;
+    padding-bottom: 24px;
+    padding-right: 9.6px !important;
+}
+
+.ingredient-choices:hover {
+    overflow-y: scroll;
+    padding-right: 0px !important;
+}
+::-webkit-scrollbar {
+    width: 10px !important;
+}
+::-webkit-scrollbar-track {
+    background: white !important;
 }
 
 .ingredient-card:hover{

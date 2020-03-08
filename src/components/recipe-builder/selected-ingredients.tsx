@@ -13,9 +13,9 @@ export class SelectedIngredients extends React.PureComponent<ISelectedIngredient
     }
 
   public render(): JSX.Element | null {
-    if (!this.props.selectedIngredients.length) {
-      return null;
-    }
-    return (<div className="selected-ingredients">{'Selected Ingredients: '}{this.getSelectedIngredientLabels()}</div>);
+    const selectedIngredients: string | JSX.Element[] = this.props.selectedIngredients.length 
+      ? this.getSelectedIngredientLabels()
+      : 'No ingredients selected yet, choose some below!'
+    return (<div className="selected-ingredients"><h5>{'Selected Ingredients: '}</h5>{selectedIngredients}</div>);
   }
 }
