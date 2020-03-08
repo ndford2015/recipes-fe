@@ -16,7 +16,6 @@ export class RecipesContainer extends React.PureComponent<IRecipesContainerProps
                     <Card.Description><div className={"recipe-card-content"}>{recipe.description}</div></Card.Description>
                 </Card.Content>
               </Card>
-        
           )
         })
     }
