@@ -131,7 +131,7 @@ export class RecipeBuilder extends React.PureComponent<IRecipeBuilderProps, IRec
   public render(): JSX.Element {
     return (
     <Container>
-      <Header textAlign="left" size={"large"}>{this.state.activeTab}</Header>
+      <div className="app-header">{this.state.activeTab}</div>
       {this.getIngredientSelector()}
     </Container>
   );

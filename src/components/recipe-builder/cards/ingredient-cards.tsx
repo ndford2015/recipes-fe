@@ -30,7 +30,7 @@ export class IngredientsContainer extends React.PureComponent<IIngredientsContai
   public render(): JSX.Element | null {
     return (
       <div className="ingredients-container">
-        {<Header textAlign="left" size="medium">{this.props.headerText}</Header>}
+        {<div className="sub-header">{this.props.headerText}</div>}
         {this.props.onSearch && 
         <Input className="search-bar" placeholder="Filter ingredients..." icon="search" onChange={this.props.onSearch} />}
         <SelectedIngredients selectedIngredients={this.props.selectedIngredients} removeIngredient={this.props.removeIngredient}/>

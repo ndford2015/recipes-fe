@@ -28,7 +28,7 @@ export class RecipesContainer extends React.PureComponent<IRecipesContainerProps
     
     return (
       <div className="recipes-container">
-        <Header textAlign="center" size="medium">{'Select a Recipe!'}</Header>  
+        <div className="sub-header">{'Select a Recipe!'}</div>  
         {this.props.isLoading ? <Loader inline active/> :
         (<div className="recipe-cards">
           {this.getRecipeCards()}
