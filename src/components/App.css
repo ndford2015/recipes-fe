@@ -8,17 +8,25 @@
   pointer-events: none;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.app-header {
+  padding: 15px 32px !important;
+  margin: 0px 0px 10px 0px !important;
+  background-color: #ff3c01fa;
   color: white;
+  text-align: left;
+  font-size: 2em;
 }
 
+.sub-header {
+  font-size: 1.6em;
+  text-align: left;
+  padding: 10px;
+  border-bottom: 4px solid #ff8100;
+  margin: 0px 5px;
+  /* background-color: orange; */
+  border-radius: 5px 5px 0px 0px;
+  color: #e57f00;
+}
 .App-link {
   color: #61dafb;
 }

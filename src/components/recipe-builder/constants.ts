@@ -15,7 +15,7 @@ export const BASE_OPTIONS: IBaseOptions = {
 
 export const CHOOSE_MEAL_STYLE: string = 'Start by choosing a meal style!';
 export const CHOOSE_MEAL_BASE: string = 'Now choose a base!';
-export const SELECT_INGREDIENTS: string = 'Select some ingredients!';
+export const SELECT_INGREDIENTS: string = 'Select some Ingredients!';
 
 export enum SELECTION_STEP {
     CHOOSE_BASE,
@@ -24,6 +24,6 @@ export enum SELECTION_STEP {
 }
 
 export enum TAB_ID {
-    RECIPE_BUILDER = 'Recipe Builder',
+    RECIPE_BUILDER = 'Cupboard Creations',
     INGREDIENT_SELECTOR = 'Ingredient Selector'
 }
